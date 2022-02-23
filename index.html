@@ -20,6 +20,7 @@
 
       </section>
 
+      <button> NEXT </button>
       <script>
         async function populate() {
 
@@ -28,11 +29,80 @@
 
           const response = await fetch(request);
           const superHeroes = await response.json();
-
+          
+          // const superHeroes = JSON.parse(superheroesText);  converts text into a js object
           populateHeader(superHeroes);
           populateHeroes(superHeroes);
 
 }
+// In our function, the first four lines use the Fetch API to fetch the JSON from the server:
+
+// we declare the requestURL variable to store the GitHub URL
+// we use the URL to initialize a new Request object.
+// we make the network request using the fetch() function, and this returns a Response object
+// we retrieve the response as JSON using the json() function of the Response object.
+
+//then we passing the object to two function call: the first fills the header and the second creates an info card for each hero on the team
+
+// HEADER:::::
+// now that we have retrieved the JSON data and converted it into an object
+// we will write the two functions that we referenced above
+function populateHeader(obj) {
+  const header = document.querySelector('header');
+  const myH1 = document.createElement('h1'); // creating h1 element
+  myH1.textContent = obj['squadName']; //setting its textContent to squadName property
+  header.appendChild(myH1); // append it to the header
+
+  const myPara = document.createElement('p');
+  myPara.textContent = `Hometown: ${obj['homeTown']} // Formed: ${obj['formed']}`; //textContent set to a template literal
+  header.appendChild(myPara);
+}
+
+//the theme is to create it, set its text content and append it
+
+// HERO INFO CARDS::::
+function populateHeroes(obj) {
+  const section = document.querySelector('section');
+  const heroes = obj['members'];
+
+  for (const hero of heroes) {
+    const myArticle = document.createElement('article');
+    const myH2 = document.createElement('h2');
+    const myPara1 = document.createElement('p');
+    const myPara2 = document.createElement('p');
+    const myPara3 = document.createElement('p');
+    const myList = document.createElement('ul');
+
+    myH2.textContent = hero.name;
+    myPara1.textContent = `Secret identity: ${hero.secretIdentity}`;
+    myPara2.textContent = `Age: ${hero.age}`;
+    myPara3.textContent = 'Superpowers:';
+
+    const superPowers = hero.powers;
+    for (const power of superPowers) {
+      const listItem = document.createElement('li');
+      listItem.textContent = power;
+      myList.appendChild(listItem);
+    }
+
+    myArticle.appendChild(myH2);
+    myArticle.appendChild(myPara1);
+    myArticle.appendChild(myPara2);
+    myArticle.appendChild(myPara3);
+    myArticle.appendChild(myList);
+
+    section.appendChild(myArticle);
+  }
+}
+populate(); // created line 25, populateHeader and populateHeroes will be run
+
+function populateNextPage(obj) {
+  const button = document.querySelector('button');
+
+  button.addEventListener('click', event => {
+    
+  })
+} 
 
       </script>
   </body>
